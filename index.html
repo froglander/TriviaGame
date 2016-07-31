@@ -11,13 +11,19 @@
 </head>
 <body>
 	<div class="container">
-		<div class="row">
+		<div class="row startFrame">
+			<div class="col-sm-12 center">
+				<button class="btn btn-success" id="startQuiz" type="submit">Start Quiz!</button>
+			</div>			
+		</div>
+		<div class="row showQuiz">
 			<div class="col-sm-12" id="question">
-				<div class="question" id="displayQuestion"></div>
-				<ol class="question" type="A" id="displayAnswers"></ol>
+				<div class="quizQuestion" id="displayQuestion"></div>
+				<ul class="quizAnswer" id="displayAnswers"></ul>
 			</div>
 		</div>
 	</div>
+	<div id="test"></div>
 	<!-- Game code -->	
 	<script src="assets/javascript/app.js"></script>
 </body>

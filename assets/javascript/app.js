@@ -1,59 +1,86 @@
 var quizQuestions = {
+	questionCount : 5,
 	"question1" : {
 		"question" : "What is a gelding?",
-		 "answer1" : "A female horse",
-		 "answer2" : "An intact male horse",
-		 "answer3" : "A neutered male horse",
-		 "answer4" : "A baby horse",
+		"answers"  :
+			{
+				"answer1" : "A female horse",
+				"answer2" : "An intact male horse",
+				"answer3" : "A neutered male horse",
+				"answer4" : "A baby horse"
+			},
 		 "correct" : "answer3",
 		"included" : false
 	},
 	"question2" : {
-		"question" : "What is a star?",
-		 "answer1" : "A white mark on the horse's body",
-		 "answer2" : "A white mark near the center of the horse's forehead",
-		 "answer3" : "A white mark on the horse's nose",
-		 "answer4" : "A white mark on the horse's leg",
-		 "correct" : "answer2",
+		"question" : "What South American animal is the smallest member of the camel family?",
+		"answers"  :
+			{
+				 "answer1" : "Guanaco",
+				 "answer2" : "Llama",
+				 "answer3" : "Vicuna",
+				 "answer4" : "Alpaca"
+			},
+		 "correct" : "answer3",
 		"included" : false
 	},
 	"question3" : {
-		"question" : "Describe a horse's vision",
-		 "answer1" : "A horse can see all around themself",
-		 "answer2" : "A horse has monocular vision on either side with a blind spot immediately in front and behind and a small area of binocular vision out in front",
-		 "answer3" : "A horse can only see in front of themself",
-		 "answer4" : "A horse has difficulty with depth perception",
-		 "correct" : "answer2",
+		"question" : "What mammal is also referred to as a sea cow?",
+		 "answers" : 
+		 	{
+		 		"answer1" : "Dolphin",
+				"answer2" : "Bovine",
+				"answer3" : "Shark",
+				"answer4" : "Manatee"
+			},
+		 "correct" : "answer4",
 		"included" : false
 	},
 	"question4" : {
-		"question" : "How many legs does a horse have",
-		 "answer1" : "2",
-		 "answer2" : "4",
-		 "answer3" : "6",
-		 "answer4" : "8",
-		 "correct" : "answer2",
+		"question" : "What is the world's tallest animal?",
+		"answers"  :
+			{
+				"answer1" : "Giraffe",
+				"answer2" : "Mouse",
+				"answer3" : "Elephant",
+				"answer4" : "Dog"
+			},
+		 "correct" : "answer1",
 		"included" : false
 	},
 	"question5" : {
-		"question" : "How many legs does a horse have",
-		 "answer1" : "2",
-		 "answer2" : "4",
-		 "answer3" : "6",
-		 "answer4" : "8",
+		"question" : "What is the largest flightless bird of Australia?",
+		 "answers" : 
+		 	{   
+		 		"answer1" : "Ostrich",
+		 		"answer2" : "Emu",
+				"answer3" : "Chicken",
+				"answer4" : "King Penguin"
+			},
 		 "correct" : "answer2",
 		"included" : false
 	},
 	displayQuestion : function(question) {
-		var thisQuestion = "question" + question;
-		console.log(thisQuestion);
-		console.log(this);
-		console.log(this[thisQuestion]);
-		$('#displayQuestion').html(this[thisQuestion].question);
-		$.each()
-		$("#displayAnswers").append('<li><a href="/user/messages"><span class="tab">Message Center</span></a></li>');
+		// Variable for question--random number passed as parameter to function
+		console.log("question", question);
+		var currentQuestion = this["question" + question];
+
+		// Display question
+		$('#displayQuestion').html(currentQuestion.question);
+
+		// Display answers
+		$.each(currentQuestion.answers, function( key, value) {			 
+		 	console.log(currentQuestion.answers[key]);
+		 	$("#displayAnswers").append($('<li/>').html(currentQuestion.answers[key]));
+		 });
 
 	},
 }
 
-quizQuestions.displayQuestion(2);
+$('#startQuiz').on('click', function() { 
+	$('#startQuiz').hide();
+	$('.showQuiz').show();
+
+	quizQuestions.displayQuestion(Math.floor(Math.random() * quizQuestions.questionCount) + 1);
+});
+
