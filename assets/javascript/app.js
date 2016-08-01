@@ -1,5 +1,10 @@
+// Global variable for trivia question display timer
+var triviaQuestionInterval;
+
+// JSON object to store quiz questions, answers and methods
 var quizQuestions = {
 	questionCount : 5,
+	questionsUsed : 0,
 	"question1" : {
 		"question" : "What is a gelding?",
 		"answers"  :
@@ -60,19 +65,52 @@ var quizQuestions = {
 		 "correct" : "answer2",
 		"included" : false
 	},
-	displayQuestion : function(question) {
-		// Variable for question--random number passed as parameter to function
-		console.log("question", question);
+	displayQuestion : function(question) {				
+		// Variable to hold the current question
 		var currentQuestion = this["question" + question];
+		// Check if this question has already been included, if so, return		
+		//if (currentQuestion.included) return;
+
+		// Variable to hold jquery DOM element so we only query for it once
+		var $displayAnswers = $('#displayAnswers');
+
+		// Set currentQuestion.included to true so the question won't be repeated
+		currentQuestion.included = true;
+
+		quizQuestions.questionsUsed++;
+
+
+		if (quizQuestions.questionsUsed == quizQuestions.questionCount) {
+			console.log("clear interval");
+			clearInterval(triviaQuestionInterval);
+		}
 
 		// Display question
 		$('#displayQuestion').html(currentQuestion.question);
 
+		$displayAnswers.empty();
 		// Display answers
 		$.each(currentQuestion.answers, function( key, value) {			 
 		 	console.log(currentQuestion.answers[key]);
-		 	$("#displayAnswers").append($('<li/>').html(currentQuestion.answers[key]));
+		 	$displayAnswers.append($('<li/>').html(currentQuestion.answers[key]));
 		 });
+
+	},
+	startQuiz : function() {
+		console.log("start quiz game");
+
+		
+		triviaQuestionInterval = setInterval(
+									function() { 
+										var randQuestion = Math.floor(Math.random() * quizQuestions.questionCount) + 1;
+										if (quizQuestions["question" + randQuestion].included) return;
+										quizQuestions.displayQuestion(randQuestion);
+										
+									}
+									, 1000);
+		console.log(triviaQuestionInterval);
+
+		
 
 	},
 }
@@ -81,6 +119,7 @@ $('#startQuiz').on('click', function() {
 	$('#startQuiz').hide();
 	$('.showQuiz').show();
 
-	quizQuestions.displayQuestion(Math.floor(Math.random() * quizQuestions.questionCount) + 1);
+	quizQuestions.startQuiz();
+	//quizQuestions.displayQuestion(Math.floor(Math.random() * quizQuestions.questionCount) + 1);
 });
 
