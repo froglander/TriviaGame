@@ -77,13 +77,15 @@ var triviaQuestions = {
 	/*				 count down timer 								*/
 	/* ************************************************************	*/
 	displayQuestion : function(currentQuestion) {
-		// Check if we have gone through all of the questions
-		if (this.questionCounter == numQuestions) {
-			// Done with questions, need to call round finished function
-			return;
-		}			
-		// Increment the object's questionCounter variable to be used for displaying the next question
-		this.questionCounter++;
+		console.log(currentQuestion);		
+
+		// Display the initial value of the countdown timer
+		$('#countdownTimer').html(this.countdownTime);
+
+		console.log("questionCounter", this.questionCounter);
+		console.log("numQuestions", this.numQuestions);
+
+				
 		
 		// Variable to refer to the current question
 		var thisQuestion = triviaQuestions.questionSet[currentQuestion];
@@ -98,13 +100,21 @@ var triviaQuestions = {
 		$displayAnswers.empty();
 		
 		// Display answers
-		$.each(thisQuestion.answers, function( key, value) {			 
-		 	console.log(thisQuestion.answers[key]);
+		$.each(thisQuestion.answers, function( key, value) {
 		 	$displayAnswers.append($('<li/>').html(thisQuestion.answers[key]).addClass("answer"));
 		});
 
 		// Set interval for question timer countdown
 		triviaQuestionInterval = setInterval( triviaQuestions.questionTimer, 1000 );
+
+		// Check if we have gone through all of the questions
+		if (this.questionCounter == this.numQuestions) {
+			// Done with questions, need to call round finished function
+			return;
+		}	
+		
+		// Increment the object's questionCounter variable to be used for displaying the next question
+		this.questionCounter++;
 	},
 	/* ************************************************************	*/
 	/* Method : questionTimer										*/
@@ -118,13 +128,15 @@ var triviaQuestions = {
 		// Create a variable 'self' to refer to the object
 		var self = triviaQuestions;
 		// Update the countdown timer display
+		self.countdownTime--;
 		$('#countdownTimer').html(self.countdownTime);
 		// Decrement the countdownTime counter
-		self.countdownTime--;
-		// Check if the time has reached 0, if so, clear the interval, reset countdownTime and display next question
+		
+		// Check if the time has reached 0, if so, clear the interval, 
+		// reset countdownTime and display next question
 		if (self.countdownTime == 0) {
 			clearInterval(triviaQuestionInterval);
-			self.countdownTime = 10;
+			self.countdownTime = 10;			
 			self.displayQuestion("question" + self.questionCounter);
 		}
 	},
