@@ -1,6 +1,5 @@
 .showQuiz {
 	display: none;
-	border: solid 1px red;
 }
 li.answer {
 	width: 200px;
@@ -8,9 +7,29 @@ li.answer {
 	list-style-type:none;
 
 }
-.answer:hover {
+/*.answer:hover {
 	background-color: rgba(0, 164, 255, 0.69);
 	width: 200px;
 	padding: 4px;
 	font-weight: bold;
+}*/
+.vcenter {
+    display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 200px;
+}
+.box {
+	border: 1px solid blue;
+}
+#countdownTimer {
+	font-size: 60px;
+	font-weight: bold;
+}
+.quizQuestion {
+	background-color: #70c772;
+	padding: 10px;
+	font-size: 36px;
+	text-align: center;
+	margin-top: 20px;
 }

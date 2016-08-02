@@ -77,15 +77,22 @@ var triviaQuestions = {
 	/*				 count down timer 								*/
 	/* ************************************************************	*/
 	displayQuestion : function(currentQuestion) {
-		console.log(currentQuestion);		
+		var self = this;
+		console.log("currentQuestion", currentQuestion);
+		
+		// Check if we have gone through all of the questions
+		if (this.questionCounter > this.numQuestions) {
+			// Done with questions, need to call round finished function
+			clearInterval(triviaQuestionInterval);
+			console.log("out of questions");
+			//return;
+		}
+		// Increment the object's questionCounter variable to be used for displaying the next question
+		this.questionCounter++;
+		
 
 		// Display the initial value of the countdown timer
 		$('#countdownTimer').html(this.countdownTime);
-
-		console.log("questionCounter", this.questionCounter);
-		console.log("numQuestions", this.numQuestions);
-
-				
 		
 		// Variable to refer to the current question
 		var thisQuestion = triviaQuestions.questionSet[currentQuestion];
@@ -101,21 +108,30 @@ var triviaQuestions = {
 		
 		// Display answers
 		$.each(thisQuestion.answers, function( key, value) {
-		 	$displayAnswers.append($('<li/>').html(thisQuestion.answers[key]).addClass("answer"));
+			// Create jquery object		
+		 	var $answer = ($('<button/>')
+			 		.attr("type", "button")
+			 		.html(thisQuestion.answers[key])
+			 		.addClass("list-group-item answer")
+			 		.attr("data-name", key)
+			 		.on('click', function() {
+			 				console.log('on click');
+			 				clearInterval(triviaQuestionInterval);
+			 				self.countdownTime = 10;			
+							self.displayQuestion("question" + self.questionCounter); 
+
+			 			})
+		 			);
+		 	// Append it to the element
+		 	$displayAnswers.append($answer);
 		});
 
 		// Set interval for question timer countdown
 		triviaQuestionInterval = setInterval( triviaQuestions.questionTimer, 1000 );
 
-		// Check if we have gone through all of the questions
-		if (this.questionCounter == this.numQuestions) {
-			// Done with questions, need to call round finished function
-			clearInterval(triviaQuestionInterval);
-			return;
-		}	
 
-		// Increment the object's questionCounter variable to be used for displaying the next question
-		this.questionCounter++;
+
+		
 	},
 	/* ************************************************************	*/
 	/* Method : questionTimer										*/
@@ -135,7 +151,7 @@ var triviaQuestions = {
 		
 		// Check if the time has reached 0, if so, clear the interval, 
 		// reset countdownTime and display next question
-		if (self.countdownTime == 0) {
+		if (self.countdownTime < 0) {
 			clearInterval(triviaQuestionInterval);
 			self.countdownTime = 10;			
 			self.displayQuestion("question" + self.questionCounter);
@@ -164,4 +180,8 @@ $('#startQuiz').on('click', function() {
 	// Call the startQuiz function 
 	triviaQuestions.startQuiz();
 });
+// $('.answer').on('click', function() {
+// 	// When you click an answer button, capture the value
+// 	console.log('on click');
+// });
 
