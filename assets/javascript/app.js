@@ -110,9 +110,10 @@ var triviaQuestions = {
 		// Check if we have gone through all of the questions
 		if (this.questionCounter == this.numQuestions) {
 			// Done with questions, need to call round finished function
+			clearInterval(triviaQuestionInterval);
 			return;
 		}	
-		
+
 		// Increment the object's questionCounter variable to be used for displaying the next question
 		this.questionCounter++;
 	},
