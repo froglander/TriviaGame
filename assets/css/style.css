@@ -1,3 +1,16 @@
 .showQuiz {
 	display: none;
+	border: solid 1px red;
+}
+li.answer {
+	width: 200px;
+	padding: 4px;
+	list-style-type:none;
+
+}
+.answer:hover {
+	background-color: rgba(0, 164, 255, 0.69);
+	width: 200px;
+	padding: 4px;
+	font-weight: bold;
 }

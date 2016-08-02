@@ -2,124 +2,153 @@
 var triviaQuestionInterval;
 
 // JSON object to store quiz questions, answers and methods
-var quizQuestions = {
-	questionCount : 5,
-	questionsUsed : 0,
-	"question1" : {
-		"question" : "What is a gelding?",
-		"answers"  :
-			{
-				"answer1" : "A female horse",
-				"answer2" : "An intact male horse",
-				"answer3" : "A neutered male horse",
-				"answer4" : "A baby horse"
+var triviaQuestions = {
+	numQuestions : 5,
+	questionCounter : 1,
+	countdownTime : 10,
+	currentQuestion : "",
+	"questionSet" : {
+			"question1" : {
+				"question" : "What is a gelding?",
+				"answers"  :
+					{
+						"answer1" : "A female horse",
+						"answer2" : "An intact male horse",
+						"answer3" : "A neutered male horse",
+						"answer4" : "A baby horse"
+					},
+				 "correct" : "answer3",
+				"included" : false
 			},
-		 "correct" : "answer3",
-		"included" : false
-	},
-	"question2" : {
-		"question" : "What South American animal is the smallest member of the camel family?",
-		"answers"  :
-			{
-				 "answer1" : "Guanaco",
-				 "answer2" : "Llama",
-				 "answer3" : "Vicuna",
-				 "answer4" : "Alpaca"
+			"question2" : {
+				"question" : "What South American animal is the smallest member of the camel family?",
+				"answers"  :
+					{
+						 "answer1" : "Guanaco",
+						 "answer2" : "Llama",
+						 "answer3" : "Vicuna",
+						 "answer4" : "Alpaca"
+					},
+				 "correct" : "answer3",
+				"included" : false
 			},
-		 "correct" : "answer3",
-		"included" : false
-	},
-	"question3" : {
-		"question" : "What mammal is also referred to as a sea cow?",
-		 "answers" : 
-		 	{
-		 		"answer1" : "Dolphin",
-				"answer2" : "Bovine",
-				"answer3" : "Shark",
-				"answer4" : "Manatee"
+			"question3" : {
+				"question" : "What mammal is also referred to as a sea cow?",
+				 "answers" : 
+				 	{
+				 		"answer1" : "Dolphin",
+						"answer2" : "Bovine",
+						"answer3" : "Shark",
+						"answer4" : "Manatee"
+					},
+				 "correct" : "answer4",
+				"included" : false
 			},
-		 "correct" : "answer4",
-		"included" : false
-	},
-	"question4" : {
-		"question" : "What is the world's tallest animal?",
-		"answers"  :
-			{
-				"answer1" : "Giraffe",
-				"answer2" : "Mouse",
-				"answer3" : "Elephant",
-				"answer4" : "Dog"
+			"question4" : {
+				"question" : "What is the world's tallest animal?",
+				"answers"  :
+					{
+						"answer1" : "Giraffe",
+						"answer2" : "Mouse",
+						"answer3" : "Elephant",
+						"answer4" : "Dog"
+					},
+				 "correct" : "answer1",
+				"included" : false
 			},
-		 "correct" : "answer1",
-		"included" : false
-	},
-	"question5" : {
-		"question" : "What is the largest flightless bird of Australia?",
-		 "answers" : 
-		 	{   
-		 		"answer1" : "Ostrich",
-		 		"answer2" : "Emu",
-				"answer3" : "Chicken",
-				"answer4" : "King Penguin"
+			"question5" : {
+				"question" : "What is the largest flightless bird of Australia?",
+				 "answers" : 
+				 	{   
+				 		"answer1" : "Ostrich",
+				 		"answer2" : "Emu",
+						"answer3" : "Chicken",
+						"answer4" : "King Penguin"
+					},
+				 "correct" : "answer2",
+				"included" : false
 			},
-		 "correct" : "answer2",
-		"included" : false
 	},
-	displayQuestion : function(question) {				
-		// Variable to hold the current question
-		var currentQuestion = this["question" + question];
-		// Check if this question has already been included, if so, return		
-		//if (currentQuestion.included) return;
-
+	/* ************************************************************	*/
+	/* Method : displayQuestion										*/
+	/* Parameters : currentQuestion									*/	
+	/* Description : This function displays the current question	*/
+	/*				 and answers and calls setInterval to start the */
+	/*				 count down timer 								*/
+	/* ************************************************************	*/
+	displayQuestion : function(currentQuestion) {
+		// Check if we have gone through all of the questions
+		if (this.questionCounter == numQuestions) {
+			// Done with questions, need to call round finished function
+			return;
+		}			
+		// Increment the object's questionCounter variable to be used for displaying the next question
+		this.questionCounter++;
+		
+		// Variable to refer to the current question
+		var thisQuestion = triviaQuestions.questionSet[currentQuestion];
+		
 		// Variable to hold jquery DOM element so we only query for it once
 		var $displayAnswers = $('#displayAnswers');
-
-		// Set currentQuestion.included to true so the question won't be repeated
-		currentQuestion.included = true;
-
-		quizQuestions.questionsUsed++;
-
-
-		if (quizQuestions.questionsUsed == quizQuestions.questionCount) {
-			console.log("clear interval");
-			clearInterval(triviaQuestionInterval);
-		}
-
+		
 		// Display question
-		$('#displayQuestion').html(currentQuestion.question);
-
+		$('#displayQuestion').html(thisQuestion.question);
+		
+		// Empty answer list
 		$displayAnswers.empty();
+		
 		// Display answers
-		$.each(currentQuestion.answers, function( key, value) {			 
-		 	console.log(currentQuestion.answers[key]);
-		 	$displayAnswers.append($('<li/>').html(currentQuestion.answers[key]));
-		 });
+		$.each(thisQuestion.answers, function( key, value) {			 
+		 	console.log(thisQuestion.answers[key]);
+		 	$displayAnswers.append($('<li/>').html(thisQuestion.answers[key]).addClass("answer"));
+		});
 
+		// Set interval for question timer countdown
+		triviaQuestionInterval = setInterval( triviaQuestions.questionTimer, 1000 );
 	},
-	startQuiz : function() {
-		console.log("start quiz game");
-
-		
-		triviaQuestionInterval = setInterval(
-									function() { 
-										var randQuestion = Math.floor(Math.random() * quizQuestions.questionCount) + 1;
-										if (quizQuestions["question" + randQuestion].included) return;
-										quizQuestions.displayQuestion(randQuestion);
-										
-									}
-									, 1000);
-		console.log(triviaQuestionInterval);
-
-		
-
+	/* ************************************************************	*/
+	/* Method : questionTimer										*/
+	/* Parameters : none											*/	
+	/* Description : This function displays the countdown timer,	*/
+	/*				 decrements the countdownTime variable, checks  */
+	/*				 if the countdown has reached 0 and if so calls */
+	/*				 displayQuestion with the next question 		*/
+	/* ************************************************************	*/
+	questionTimer : function() {
+		// Create a variable 'self' to refer to the object
+		var self = triviaQuestions;
+		// Update the countdown timer display
+		$('#countdownTimer').html(self.countdownTime);
+		// Decrement the countdownTime counter
+		self.countdownTime--;
+		// Check if the time has reached 0, if so, clear the interval, reset countdownTime and display next question
+		if (self.countdownTime == 0) {
+			clearInterval(triviaQuestionInterval);
+			self.countdownTime = 10;
+			self.displayQuestion("question" + self.questionCounter);
+		}
 	},
-}
+	/* ************************************************************	*/
+	/* Method : startQuiz											*/
+	/* Parameters : none											*/	
+	/* Description : This function sets up the first question 		*/
+	/*				 to pass to displayQuestion as a parameter 		*/
+	/* ************************************************************	*/
+	startQuiz : function() {		
+		// Set up a variable to pass as a parameter to refer to the first question
+		this.currentQuestion = "question" + this.questionCounter;
+
+		// Call function to display question, passing parameter for first quesiton
+		this.displayQuestion(this.currentQuestion);
+	},
+} /* end triviaQuestions object */
 
 $('#startQuiz').on('click', function() { 
+	// When you click the 'Start Quiz' button, it is hidden and the quiz quesitons div is displayed
 	$('#startQuiz').hide();
 	$('.showQuiz').show();
 
-	quizQuestions.startQuiz();
-	//quizQuestions.displayQuestion(Math.floor(Math.random() * quizQuestions.questionCount) + 1);
+	// Call the startQuiz function 
+	triviaQuestions.startQuiz();
 });
 
