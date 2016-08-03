@@ -17,8 +17,7 @@ var triviaQuestions = {
 						"answer3" : "A neutered male horse",
 						"answer4" : "A baby horse"
 					},
-				 "correct" : "answer3",
-				"included" : false
+				 "correct" : "answer3"
 			},
 			"question2" : {
 				"question" : "What South American animal is the smallest member of the camel family?",
@@ -29,8 +28,7 @@ var triviaQuestions = {
 						 "answer3" : "Vicuna",
 						 "answer4" : "Alpaca"
 					},
-				 "correct" : "answer3",
-				"included" : false
+				 "correct" : "answer3"
 			},
 			"question3" : {
 				"question" : "What mammal is also referred to as a sea cow?",
@@ -41,8 +39,7 @@ var triviaQuestions = {
 						"answer3" : "Shark",
 						"answer4" : "Manatee"
 					},
-				 "correct" : "answer4",
-				"included" : false
+				 "correct" : "answer4"
 			},
 			"question4" : {
 				"question" : "What is the world's tallest animal?",
@@ -53,8 +50,7 @@ var triviaQuestions = {
 						"answer3" : "Elephant",
 						"answer4" : "Dog"
 					},
-				 "correct" : "answer1",
-				"included" : false
+				 "correct" : "answer1"
 			},
 			"question5" : {
 				"question" : "What is the largest flightless bird of Australia?",
@@ -65,8 +61,7 @@ var triviaQuestions = {
 						"answer3" : "Chicken",
 						"answer4" : "King Penguin"
 					},
-				 "correct" : "answer2",
-				"included" : false
+				 "correct" : "answer2"
 			},
 	},
 	/* ************************************************************	*/
@@ -108,12 +103,16 @@ var triviaQuestions = {
 		
 		// Display answers
 		$.each(thisQuestion.answers, function( key, value) {
+			console.log("key", key);
+			console.log("value", value);
 			// Create jquery object		
 		 	var $answer = ($('<button/>')
 			 		.attr("type", "button")
-			 		.html(thisQuestion.answers[key])
+			 		//.html(thisQuestion.answers[key])
+			 		.html(value)
 			 		.addClass("list-group-item answer")
 			 		.attr("data-name", key)
+			 		// On click function for the button
 			 		.on('click', function() {
 			 				console.log('on click');
 			 				clearInterval(triviaQuestionInterval);
@@ -127,11 +126,7 @@ var triviaQuestions = {
 		});
 
 		// Set interval for question timer countdown
-		triviaQuestionInterval = setInterval( triviaQuestions.questionTimer, 1000 );
-
-
-
-		
+		triviaQuestionInterval = setInterval( triviaQuestions.questionTimer, 1000 );		
 	},
 	/* ************************************************************	*/
 	/* Method : questionTimer										*/
@@ -180,8 +175,3 @@ $('#startQuiz').on('click', function() {
 	// Call the startQuiz function 
 	triviaQuestions.startQuiz();
 });
-// $('.answer').on('click', function() {
-// 	// When you click an answer button, capture the value
-// 	console.log('on click');
-// });
-
