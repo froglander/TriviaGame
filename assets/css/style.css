@@ -6,6 +6,9 @@ body {
 .showQuiz {	
 	display: none;
 }
+#endGameResults {
+	display: none;
+}
 #countdownTimer {
 	font-size: 60px;
 	font-weight: bold;	
@@ -59,7 +62,7 @@ body {
 button.list-group-item {
 	text-align: center;
 }
-#displayCorrect {
+.panel-display {
 	height: 185px;
 	font-size: 24px;
 }
