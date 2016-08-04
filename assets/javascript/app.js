@@ -188,6 +188,7 @@ var triviaQuestions = {
 $('#startQuiz').on('click', function() { 
 	// When you click the 'Start Quiz' button, it is hidden and the quiz quesitons div is displayed
 	$('#startQuiz').hide();
+
 	$('.showCorrectAnswer').hide();
 	$('.showQuiz').show();
 

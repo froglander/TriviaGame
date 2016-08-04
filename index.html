@@ -10,42 +10,24 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 </head>
 <body>
-	<header class="header">
+	<header class="header text-vertical-center">
 		<div class="text-vertical-center">
-		<!-- Div to contain start button, is hidden after click -->
-		<div class="row startFrame">
-			<div class="col-sm-12 center">
+			<div class="container">
 				<button class="btn startButton" id="startQuiz" type="submit">Start Quiz!</button>
-			</div>			
-		</div>
-		<!-- Div to display quiz question and answers -->
-		<div class="showQuestion showQuiz">
-			<div class="row">
-				<div class="col-sm-10 col-sm-offset-1">
-					<div class="quizQuestion" id="displayQuestion"></div>
-				</div>
-			</div>
-			<div class="row showAnswers">
-				<div class="col-sm-offset-3 col-sm-6">				
-					<div class="quizAnswer list-group" id="displayAnswers"></div>
-				</div>
-				<div class="col-sm-3">
-					<div class="row">
-						<div class="col-sm-12 vcenter">
-							<div id="countdownTimer"></div>
-						</div>
+
+				<div class="panel panel-default showQuiz">
+					<div class="panel-heading">
+						<div class="quizQuestionHeader align-center" id="displayQuestion"></div>
+					</div>
+					<div class="panel-body">						
+						<div class="quizAnswer list-group" id="displayAnswers"></div>						
+						<div class="quizAnswer" id="displayCorrect"></div>						
+					</div>
+					<div class="panel-footer align-center">
+						<div id="countdownTimer"></div>
 					</div>
 				</div>
-			</div>
-		</div>
-		<!-- Div to display correct answer -->
-		<div class="showCorrectAnswer">
-			<div class="row">
-				<div class="col-sm-10 col-sm-offset-1">
-					<div class="quizAnswer" id="displayCorrect"></div>
-				</div>
-			</div>
-		</div>
+			</div>			
 		</div>
 	</header>
 	<!-- Game code -->	
