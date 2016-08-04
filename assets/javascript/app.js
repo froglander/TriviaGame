@@ -72,19 +72,8 @@ var triviaQuestions = {
 	/*				 count down timer 								*/
 	/* ************************************************************	*/
 	displayQuestion : function(currentQuestion) {
+		// Variable self to refer to the object inside button click function
 		var self = this;
-		console.log("currentQuestion", currentQuestion);
-		
-		// Check if we have gone through all of the questions
-		if (this.questionCounter > this.numQuestions) {
-			// Done with questions, need to call round finished function
-			clearInterval(triviaQuestionInterval);
-			console.log("out of questions");
-			//return;
-		}
-		// Increment the object's questionCounter variable to be used for displaying the next question
-		this.questionCounter++;
-		
 
 		// Display the initial value of the countdown timer
 		$('#countdownTimer').html(this.countdownTime);
@@ -102,31 +91,51 @@ var triviaQuestions = {
 		$displayAnswers.empty();
 		
 		// Display answers
-		$.each(thisQuestion.answers, function( key, value) {
-			console.log("key", key);
-			console.log("value", value);
+		$.each(thisQuestion.answers, function( key, value) {			
 			// Create jquery object		
 		 	var $answer = ($('<button/>')
 			 		.attr("type", "button")
-			 		//.html(thisQuestion.answers[key])
 			 		.html(value)
 			 		.addClass("list-group-item answer")
 			 		.attr("data-name", key)
 			 		// On click function for the button
-			 		.on('click', function() {
-			 				console.log('on click');
-			 				clearInterval(triviaQuestionInterval);
-			 				self.countdownTime = 10;			
-							self.displayQuestion("question" + self.questionCounter); 
-
+			 		.on('click', function() {			 			
+			 				self.displayAnswer(currentQuestion, $(this).data('name'));
 			 			})
 		 			);
 		 	// Append it to the element
 		 	$displayAnswers.append($answer);
 		});
-
 		// Set interval for question timer countdown
-		triviaQuestionInterval = setInterval( triviaQuestions.questionTimer, 1000 );		
+		triviaQuestionInterval = setInterval( triviaQuestions.questionTimer, 1000 );
+	},
+	/* ************************************************************	*/
+	/* Method : displayAnswer										*/
+	/* Parameters : currentAnswer									*/	
+	/* Description : This function checks if the current answer 	*/
+	/*				 is correct and either displays congrats or 	*/
+	/*				 the correct answer before moving to next		*/
+	/*				 question 										*/
+	/* ************************************************************	*/
+	displayAnswer : function(currentQuestion, currentAnswer) {
+
+		console.log("question: " , currentQuestion);
+		console.log("answer: ", currentAnswer);		
+		console.log("correct: " , this.questionSet[currentQuestion].correct);
+
+		if (currentAnswer == this.questionSet[currentQuestion].correct) {
+			console.log("Good job");
+			$('#displayAnswers').hide();
+			$('.showCorrectAnswer').show();
+			$('#displayCorrect').html("Good job");
+		}
+		else {
+			console.log("Too bad");
+			$('.showQuiz').hide();
+			$('.showCorrectAnswer').show();
+			$('#displayCorrect ').html("The correct answer was " + this.questionSet[currentQuestion].answers[this.questionSet[currentQuestion].correct]);
+		}
+
 	},
 	/* ************************************************************	*/
 	/* Method : questionTimer										*/
@@ -139,17 +148,26 @@ var triviaQuestions = {
 	questionTimer : function() {
 		// Create a variable 'self' to refer to the object
 		var self = triviaQuestions;
-		// Update the countdown timer display
-		self.countdownTime--;
-		$('#countdownTimer').html(self.countdownTime);
-		// Decrement the countdownTime counter
 		
-		// Check if the time has reached 0, if so, clear the interval, 
-		// reset countdownTime and display next question
-		if (self.countdownTime < 0) {
+		// Decrement the countdownTime counter
+		self.countdownTime--;
+		// Update the countdown timer display
+		$('#countdownTimer').html(self.countdownTime);		
+				
+		// Check if the time has reached 0 and there are more questions to ask
+		// if so, clear the interval, reset countdownTime and display next question
+		// If there are no more questions to ask, go to end game display				
+		if (self.countdownTime == 0) {
 			clearInterval(triviaQuestionInterval);
-			self.countdownTime = 10;			
-			self.displayQuestion("question" + self.questionCounter);
+			// Check if there are questions left			
+			if (self.questionCounter < self.numQuestions) {
+				// Increment the object's questionCounter variable to be used for displaying the next question
+				self.questionCounter++;					
+				self.countdownTime = 10;			
+				self.displayQuestion("question" + self.questionCounter);
+			} else {
+				console.log("Game over");
+			}
 		}
 	},
 	/* ************************************************************	*/
@@ -170,6 +188,7 @@ var triviaQuestions = {
 $('#startQuiz').on('click', function() { 
 	// When you click the 'Start Quiz' button, it is hidden and the quiz quesitons div is displayed
 	$('#startQuiz').hide();
+	$('.showCorrectAnswer').hide();
 	$('.showQuiz').show();
 
 	// Call the startQuiz function 

@@ -1,18 +1,22 @@
-.showQuiz {
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+/*html {
+	background: url("../images/background.jpg") no-repeat center fixed;
+    background-color: #6c9f38;
+}*/
+
+.showQuiz {	
 	display: none;
 }
 li.answer {
 	width: 200px;
 	padding: 4px;
 	list-style-type:none;
-
 }
-/*.answer:hover {
-	background-color: rgba(0, 164, 255, 0.69);
-	width: 200px;
-	padding: 4px;
-	font-weight: bold;
-}*/
 .vcenter {
     display: flex;
 	align-items: center;
@@ -27,9 +31,35 @@ li.answer {
 	font-weight: bold;
 }
 .quizQuestion {
-	background-color: #70c772;
+	background-color: rgba(145, 201, 97, 0.65);
 	padding: 10px;
 	font-size: 36px;
 	text-align: center;
 	margin-top: 20px;
+}
+
+.text-vertical-center {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+}
+/* Header */
+
+.header {
+    display: table;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: url(../images/background.jpg) no-repeat center center scroll;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+}
+.startButton {
+	background-color: #a749b7;
+	font-size: 36px;
+	padding: 20px;
+	color: #fbfdfc;
+	font-weight: bold;
 }
