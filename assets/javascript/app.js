@@ -197,16 +197,44 @@ var triviaQuestions = {
 	/*				 wrong, and unanswered questions 		 		*/
 	/* ************************************************************	*/
 	endGame : function() {
+		var self = triviaQuestions;
 		// Hide the answers and display correct
 		$('#displayAnswers').hide();
 		$('#displayCorrect').hide();
 
 		$('#displayQuestion').html("<h1>Trivia Game Results</h1>");				
+
+		// Play again button
+		var $playAgain = ($('<button/>')
+			 		.attr("type", "button")
+			 		.html("Play Again")
+			 		.addClass("btn startButton")
+			 		// On click function for the button
+			 		.on('click', function() {
+			 				// Reset variables
+			 				self.resetQuiz();
+							// Call startQuiz
+			 				self.startQuiz();
+			 			})
+		 			);
 		$('#endGameResults').html("Number correct: " + this.numCorrect)
 							.append("<br/> Number incorrect: " + this.numIncorrect)
 							.append("<br/> Number unanswered: " + this.numUnanswered)
+							.append("<br/>")
+							.append($playAgain)
 							.show();
 
+
+		//$playAgain.appendTo($('#endGameResults'));
+
+	},
+	resetQuiz : function() {
+		// Reset variables
+		this.questionCounter = 1;
+		this.countdownTime = 10;
+		this.numCorrect = 0;
+		this.numIncorrect = 0;
+		this.numUnanswered = 0;
 	},
 	/* ************************************************************	*/
 	/* Method : startQuiz											*/
@@ -215,6 +243,12 @@ var triviaQuestions = {
 	/*				 to pass to displayQuestion as a parameter 		*/
 	/* ************************************************************	*/
 	startQuiz : function() {		
+		// When you click the 'Start Quiz' button, it is hidden and the quiz quesitons div is displayed
+	$('#startQuiz').hide();
+	$('#endGameResults').hide();
+
+	$('.showCorrectAnswer').hide();
+	$('.showQuiz').show();
 		// Set up a variable to pass as a parameter to refer to the first question
 		this.currentQuestion = "question" + this.questionCounter;
 
@@ -224,11 +258,11 @@ var triviaQuestions = {
 } /* end triviaQuestions object */
 
 $('#startQuiz').on('click', function() { 
-	// When you click the 'Start Quiz' button, it is hidden and the quiz quesitons div is displayed
-	$('#startQuiz').hide();
+	// // When you click the 'Start Quiz' button, it is hidden and the quiz quesitons div is displayed
+	// $('#startQuiz').hide();
 
-	$('.showCorrectAnswer').hide();
-	$('.showQuiz').show();
+	// $('.showCorrectAnswer').hide();
+	// $('.showQuiz').show();
 
 	// Call the startQuiz function 
 	triviaQuestions.startQuiz();
