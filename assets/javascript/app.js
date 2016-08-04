@@ -123,10 +123,7 @@ var triviaQuestions = {
 	/*				 the correct answer before moving to next		*/
 	/*				 question 										*/
 	/* ************************************************************	*/
-	displayCorrectAnswer : function(currentQuestion, currentAnswer) {
-		// console.log("displayCorrectAnswer currentQuestion:", currentQuestion);
-		// console.log("displayCorrectAnswer currentAnswer:", currentAnswer);
-
+	displayCorrectAnswer : function(currentQuestion, currentAnswer) {		
 		var self = triviaQuestions;
 		
 		/* ************************************************************** */
@@ -139,23 +136,16 @@ var triviaQuestions = {
 		// Declare variable to store correctAnswer
 		var correctAnswer = self.questionSet[currentQuestion].answers[self.questionSet[currentQuestion].correct];
 		// Set display text if right or wrong
-		
-		console.log("Current Answer:", currentAnswer);
-
+				
 		if (currentAnswer == self.questionSet[currentQuestion].correct) {
 			self.numCorrect++;
 			$('#displayCorrect').html("Good job! <br />" + correctAnswer + " was correct.").show();			
 		} else {
-			$('#displayCorrect ').html("Too bad <br /> The correct answer was " + correctAnswer).show();
+			$('#displayCorrect ').html("Bummer! <br /> The correct answer was " + correctAnswer).show();
+			// Increment for incorrect or unanswered
 			if (currentAnswer == "unanswered" ) self.numUnanswered++;
 			else self.numIncorrect++;
-			//$('#displayCorrect ').html("Too bad <br /> The correct answer was " + correctAnswer).show();
-			
 		}
-
-		// console.log("currentQuestion:", currentQuestion);
-		// console.log("questionCounter:", this.questionCounter);
-		// console.log("numQuestions:", this.numQuestions);
 
 		// Check if there are more questions and set a timeout which
 		// then calls the displayQuestion function with the next question
@@ -172,7 +162,6 @@ var triviaQuestions = {
 			var gameResult = setTimeout(function() { 
 											self.endGame();
 										}, 3000);	
-			//self.endGame();
 		}
 	},
 	/* ************************************************************	*/
@@ -187,7 +176,6 @@ var triviaQuestions = {
 		// Create a variable 'self' to refer to the object
 		var self = triviaQuestions;
 		
-		console.log("questionTimer");
 		// Decrement the countdownTime counter
 		self.countdownTime--;
 		// Update the countdown timer display
@@ -196,12 +184,8 @@ var triviaQuestions = {
 		// Check if the time has reached 0 if so, display correct answer
 		if (self.countdownTime == 0) {
 			//clearInterval(triviaQuestionInterval);
-			var currentQuestion = "question" + self.questionCounter;			
-			//var correctAnswer = self.questionSet[currentQuestion].answers[self.questionSet[currentQuestion].correct];
+			var currentQuestion = "question" + self.questionCounter;					
 			var currentAnswer = "unanswered";
-
-			// console.log("questionTimer currentQuestion:", currentQuestion);
-			// console.log("questionTimer correctAnswer:", correctAnswer);
 			
 			self.displayCorrectAnswer(currentQuestion, currentAnswer);
 		}
