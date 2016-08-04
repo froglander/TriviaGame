@@ -6,7 +6,9 @@ var triviaQuestions = {
 	numQuestions : 5,
 	questionCounter : 1,
 	countdownTime : 10,
-	//currentQuestion : "",
+	numCorrect : 0,
+	numIncorrect : 0,
+	numUnanswered : 0,
 	"questionSet" : {
 			"question1" : {
 				"question" : "What is a gelding?",
@@ -122,6 +124,9 @@ var triviaQuestions = {
 	/*				 question 										*/
 	/* ************************************************************	*/
 	displayCorrectAnswer : function(currentQuestion, currentAnswer) {
+		// console.log("displayCorrectAnswer currentQuestion:", currentQuestion);
+		// console.log("displayCorrectAnswer currentAnswer:", currentAnswer);
+
 		var self = triviaQuestions;
 		
 		/* ************************************************************** */
@@ -134,25 +139,39 @@ var triviaQuestions = {
 		// Declare variable to store correctAnswer
 		var correctAnswer = self.questionSet[currentQuestion].answers[self.questionSet[currentQuestion].correct];
 		// Set display text if right or wrong
-		if (currentAnswer == self.questionSet[currentQuestion].correct) {		
-				$('#displayCorrect').html("Good job! <br />" + correctAnswer + " was correct.").show();			
+		
+		console.log("Current Answer:", currentAnswer);
+
+		if (currentAnswer == self.questionSet[currentQuestion].correct) {
+			self.numCorrect++;
+			$('#displayCorrect').html("Good job! <br />" + correctAnswer + " was correct.").show();			
 		} else {
-			$('#displayCorrect ')
-				.html("Too bad <br /> The correct answer was " + correctAnswer).show();
+			$('#displayCorrect ').html("Too bad <br /> The correct answer was " + correctAnswer).show();
+			if (currentAnswer == "unanswered" ) self.numUnanswered++;
+			else self.numIncorrect++;
+			//$('#displayCorrect ').html("Too bad <br /> The correct answer was " + correctAnswer).show();
+			
 		}
+
+		// console.log("currentQuestion:", currentQuestion);
+		// console.log("questionCounter:", this.questionCounter);
+		// console.log("numQuestions:", this.numQuestions);
 
 		// Check if there are more questions and set a timeout which
 		// then calls the displayQuestion function with the next question
-		// or ends the game
 		if (this.questionCounter < this.numQuestions){			
 			// Reset coutndownTime
 			this.countdownTime = 10;
 			// Increment questionCounter to display the next question
 			this.questionCounter++;
 			
-			var nextQuestion = setTimeout(function() { self.displayQuestion("question" + self.questionCounter) }, 3000);			
+			var nextQuestion = setTimeout(function() { 
+											self.displayQuestion("question" + self.questionCounter);
+										}, 3000);			
 		} else {
-			var gameResult = setTimeout(function() { self.endGame() }, 3000);	
+			var gameResult = setTimeout(function() { 
+											self.endGame();
+										}, 3000);	
 			//self.endGame();
 		}
 	},
@@ -166,8 +185,9 @@ var triviaQuestions = {
 	/* ************************************************************	*/
 	questionTimer : function() {
 		// Create a variable 'self' to refer to the object
-		var self = triviaQuestions;		
+		var self = triviaQuestions;
 		
+		console.log("questionTimer");
 		// Decrement the countdownTime counter
 		self.countdownTime--;
 		// Update the countdown timer display
@@ -175,8 +195,15 @@ var triviaQuestions = {
 				
 		// Check if the time has reached 0 if so, display correct answer
 		if (self.countdownTime == 0) {
-			self.displayCorrectAnswer("question" + self.questionCounter
-									, self.questionSet[currentQuestion].answers[self.questionSet[currentQuestion].correct]);			
+			//clearInterval(triviaQuestionInterval);
+			var currentQuestion = "question" + self.questionCounter;			
+			//var correctAnswer = self.questionSet[currentQuestion].answers[self.questionSet[currentQuestion].correct];
+			var currentAnswer = "unanswered";
+
+			// console.log("questionTimer currentQuestion:", currentQuestion);
+			// console.log("questionTimer correctAnswer:", correctAnswer);
+			
+			self.displayCorrectAnswer(currentQuestion, currentAnswer);
 		}
 	},	
 	/* ************************************************************	*/
@@ -191,7 +218,10 @@ var triviaQuestions = {
 		$('#displayCorrect').hide();
 
 		$('#displayQuestion').html("<h1>Trivia Game Results</h1>");				
-		$('#endGameResults').html("Did you answer all the questions?").show();
+		$('#endGameResults').html("Number correct: " + this.numCorrect)
+							.append("<br/> Number incorrect: " + this.numIncorrect)
+							.append("<br/> Number unanswered: " + this.numUnanswered)
+							.show();
 
 	},
 	/* ************************************************************	*/
