@@ -223,13 +223,14 @@ var triviaQuestions = {
 							.append("<br/>")
 							.append($playAgain)
 							.show();
-
-
-		//$playAgain.appendTo($('#endGameResults'));
-
 	},
+	/* ************************************************************	*/
+	/* Method : resetQuiz											*/
+	/* Parameters : none											*/	
+	/* Description : This function resets variables so user can		*/
+	/*				 play again without refreshing the page			*/
+	/* ************************************************************	*/
 	resetQuiz : function() {
-		// Reset variables
 		this.questionCounter = 1;
 		this.countdownTime = 10;
 		this.numCorrect = 0;
@@ -244,11 +245,11 @@ var triviaQuestions = {
 	/* ************************************************************	*/
 	startQuiz : function() {		
 		// When you click the 'Start Quiz' button, it is hidden and the quiz quesitons div is displayed
-	$('#startQuiz').hide();
-	$('#endGameResults').hide();
+		$('#startQuiz').hide();
+		$('#endGameResults').hide();
 
-	$('.showCorrectAnswer').hide();
-	$('.showQuiz').show();
+		$('.showCorrectAnswer').hide();
+		$('.showQuiz').show();
 		// Set up a variable to pass as a parameter to refer to the first question
 		this.currentQuestion = "question" + this.questionCounter;
 
@@ -258,12 +259,6 @@ var triviaQuestions = {
 } /* end triviaQuestions object */
 
 $('#startQuiz').on('click', function() { 
-	// // When you click the 'Start Quiz' button, it is hidden and the quiz quesitons div is displayed
-	// $('#startQuiz').hide();
-
-	// $('.showCorrectAnswer').hide();
-	// $('.showQuiz').show();
-
 	// Call the startQuiz function 
 	triviaQuestions.startQuiz();
 });
