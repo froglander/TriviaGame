@@ -77,6 +77,9 @@ var triviaQuestions = {
 
 		// Display the initial value of the countdown timer
 		$('#countdownTimer').html(this.countdownTime);
+
+		// Hide correct answer if it is displayed
+		$('#displayCorrect').hide();
 		
 		// Variable to refer to the current question
 		var thisQuestion = triviaQuestions.questionSet[currentQuestion];
@@ -89,6 +92,7 @@ var triviaQuestions = {
 		
 		// Empty answer list
 		$displayAnswers.empty();
+		$displayAnswers.show();
 		
 		// Display answers
 		$.each(thisQuestion.answers, function( key, value) {			
@@ -96,11 +100,11 @@ var triviaQuestions = {
 		 	var $answer = ($('<button/>')
 			 		.attr("type", "button")
 			 		.html(value)
-			 		.addClass("list-group-item answer")
+			 		.addClass("list-group-item")
 			 		.attr("data-name", key)
 			 		// On click function for the button
 			 		.on('click', function() {			 			
-			 				self.displayAnswer(currentQuestion, $(this).data('name'));
+			 				self.displayCorrectAnswer(currentQuestion, $(this).data('name'));
 			 			})
 		 			);
 		 	// Append it to the element
@@ -110,32 +114,43 @@ var triviaQuestions = {
 		triviaQuestionInterval = setInterval( triviaQuestions.questionTimer, 1000 );
 	},
 	/* ************************************************************	*/
-	/* Method : displayAnswer										*/
+	/* Method : displayCorrectAnswer								*/
 	/* Parameters : currentAnswer									*/	
 	/* Description : This function checks if the current answer 	*/
 	/*				 is correct and either displays congrats or 	*/
 	/*				 the correct answer before moving to next		*/
 	/*				 question 										*/
 	/* ************************************************************	*/
-	displayAnswer : function(currentQuestion, currentAnswer) {
-
+	displayCorrectAnswer : function(currentQuestion, currentAnswer) {
+		var self = triviaQuestions;
 		console.log("question: " , currentQuestion);
 		console.log("answer: ", currentAnswer);		
-		console.log("correct: " , this.questionSet[currentQuestion].correct);
-
-		if (currentAnswer == this.questionSet[currentQuestion].correct) {
-			console.log("Good job");
-			$('#displayAnswers').hide();
-			$('.showCorrectAnswer').show();
-			$('#displayCorrect').html("Good job");
+		console.log("correct: " , self.questionSet[currentQuestion].correct);
+		
+		/* ************************************************************** */
+		/* This stuff happens whether you got the question right or wrong */
+		/* ************************************************************** */
+		// Hide the answers and display correct
+		$('#displayAnswers').hide();
+		// Clear the question timer
+		clearInterval(triviaQuestionInterval);
+		
+		var correctAnswer = self.questionSet[currentQuestion].answers[self.questionSet[currentQuestion].correct];
+		// Set display text if right or wrong
+		if (currentAnswer == self.questionSet[currentQuestion].correct) {		
+				$('#displayCorrect').html("Good job! <br />" + correctAnswer + " was correct.").show();			
+		} else {
+			$('#displayCorrect ')
+				.html("Too bad <br /> The correct answer was " + correctAnswer)
+				.show();
 		}
-		else {
-			console.log("Too bad");
-			$('.showQuiz').hide();
-			$('.showCorrectAnswer').show();
-			$('#displayCorrect ').html("The correct answer was " + this.questionSet[currentQuestion].answers[this.questionSet[currentQuestion].correct]);
+		// Check if there are more questions and set a timeout which
+		// then calls the displayQuestion function with the next question
+		if (self.moreQuestions()) {			
+			var nextQuestion = setTimeout(function() { 
+											self.displayQuestion("question" + self.questionCounter);
+										}, 3000);			
 		}
-
 	},
 	/* ************************************************************	*/
 	/* Method : questionTimer										*/
@@ -159,15 +174,29 @@ var triviaQuestions = {
 		// If there are no more questions to ask, go to end game display				
 		if (self.countdownTime == 0) {
 			clearInterval(triviaQuestionInterval);
-			// Check if there are questions left			
-			if (self.questionCounter < self.numQuestions) {
-				// Increment the object's questionCounter variable to be used for displaying the next question
-				self.questionCounter++;					
-				self.countdownTime = 10;			
+			if (self.moreQuestions()) {
 				self.displayQuestion("question" + self.questionCounter);
 			} else {
 				console.log("Game over");
+				// Call end game function
 			}
+		}
+	},
+	/* ************************************************************	*/
+	/* Method : moreQuestions										*/
+	/* Parameters : none											*/	
+	/* Description : This function checks if there are more 		*/
+	/*				 questions left and updates variables	 		*/
+	/* ************************************************************	*/
+	moreQuestions : function() {				
+		if (this.questionCounter < this.numQuestions){
+			// Increment the object's questionCounter variable to be used 
+			// for displaying the next question
+			this.questionCounter++;
+			this.countdownTime = 10;
+			return true;
+		} else {
+			return false;
 		}
 	},
 	/* ************************************************************	*/
