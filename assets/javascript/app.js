@@ -3,7 +3,7 @@ var triviaQuestionInterval;
 
 // JSON object to store quiz questions, answers and methods
 var triviaQuestions = {
-	numQuestions : 5,
+	numQuestions : 10,
 	questionCounter : 1,
 	countdownTime : 10,
 	numCorrect : 0,
@@ -65,6 +65,62 @@ var triviaQuestions = {
 					},
 				 "correct" : "answer2"
 			},
+			"question6" : {
+				"question" : "What type of animal is a seahorse?",
+				 "answers" : 
+				 	{   
+				 		"answer1" : "Crustacean",
+				 		"answer2" : "Arachnid",
+						"answer3" : "Fish",
+						"answer4" : "Shell"
+					},
+				 "correct" : "answer1"
+			},
+			"question7" : {
+				"question" : "What existing bird has the largest wingspan?",
+				 "answers" : 
+				 	{   
+				 		"answer1" : "Stork",
+				 		"answer2" : "Swan",
+						"answer3" : "Condor",
+						"answer4" : "Albatross"
+					},
+				 "correct" : "answer4"
+			},
+			"question8" : {
+				"question" : "What is the biggest animal that has ever lived?",
+				 "answers" : 
+				 	{   
+				 		"answer1" : "Blue whale",
+				 		"answer2" : "African elephant",
+						"answer3" : "Apatosaurus (aka brontosaurus)",
+						"answer4" : "Spinosaurus"
+					},
+				 "correct" : "answer1"
+			},
+			"question9" : {
+				"question" : "What is the fastest water animal?",
+				 "answers" : 
+				 	{   
+				 		"answer1" : "Porpoise",
+				 		"answer2" : "Sailfish",
+						"answer3" : "Flying fish",
+						"answer4" : "Tuna"
+					},
+				 "correct" : "answer2"
+			},
+			"question10" : {
+				"question" : "What are female elephants called?",
+				 "answers" : 
+				 	{   
+				 		"answer1" : "Mares",
+				 		"answer2" : "Sows",
+						"answer3" : "Cows",
+						"answer4" : "Dams"
+					},
+				 "correct" : "answer3"
+			},
+			
 	},
 	/* ************************************************************	*/
 	/* Method : displayQuestion										*/
