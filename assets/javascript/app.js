@@ -74,7 +74,7 @@ var triviaQuestions = {
 						"answer3" : "Fish",
 						"answer4" : "Shell"
 					},
-				 "correct" : "answer1"
+				 "correct" : "answer3"
 			},
 			"question7" : {
 				"question" : "What existing bird has the largest wingspan?",
